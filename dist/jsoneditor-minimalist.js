@@ -25,7 +25,7 @@
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
  * @version 5.28.2
- * @date    2019-01-23
+ * @date    2019-02-06
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -255,7 +255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	JSONEditor.prototype.DEBOUNCE_INTERVAL = 150;
 
 	JSONEditor.VALID_OPTIONS = [
-	  'ajv', 'schema', 'schemaRefs','templates',
+	  'ajv', 'schema', 'schemaRefs','templates', 'enumDefaultValue',
 	  'ace', 'theme', 'autocomplete',
 	  'onChange', 'onChangeJSON', 'onChangeText',
 	  'onEditable', 'onError', 'onEvent', 'onModeChange', 'onNodeName', 'onValidate',
@@ -6572,7 +6572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _locales = ['en', 'pt-BR'];
+	var _locales = ['en', 'pt-BR', 'zh-CN'];
 	var _defs = {
 	  en: {
 	    array: 'Array',
@@ -6655,6 +6655,88 @@ return /******/ (function(modules) { // webpackBootstrap
 	    modeTreeTitle: 'Switch to tree editor',
 	    modeViewText: 'View',
 	    modeViewTitle: 'Switch to tree view',
+	  },
+	  'zh-CN': {
+	    array: '数组',
+	    auto: '自动',
+	    appendText: '追加',
+	    appendTitle: '在此字段后追加一个类型为“auto”的新字段 (Ctrl+Shift+Ins)',
+	    appendSubmenuTitle: '选择要追加的字段类型',
+	    appendTitleAuto: '追加类型为“auto”的新字段 (Ctrl+Shift+Ins)',
+	    ascending: '升序',
+	    ascendingTitle: '升序排列${type}的子节点',
+	    actionsMenu: '点击打开动作菜单(Ctrl+M)',
+	    collapseAll: '缩进所有字段',
+	    descending: '姜旭',
+	    descendingTitle: '降序序排列${type}的子节点',
+	    drag: '拖拽移动该节点(Alt+Shift+Arrows)',
+	    duplicateKey: '复制键',
+	    duplicateText: '复制',
+	    duplicateTitle: '复制选中字段(Ctrl+D)',
+	    duplicateField: '复制该字段(Ctrl+D)',
+	    empty: '清空',
+	    expandAll: '展开所有字段',
+	    expandTitle: '点击 展开/收缩 该字段(Ctrl+E). \n' +
+	      'Ctrl+Click 展开/收缩 包含所有子节点.',
+	    insert: '插入',
+	    insertTitle: '在此字段前插入类型为“auto”的新字段 (Ctrl+Ins)',
+	    insertSub: '选择要插入的字段类型',
+	    object: '对象',
+	    ok: 'Ok',
+	    redo: '重做 (Ctrl+Shift+Z)',
+	    removeText: '移除',
+	    removeTitle: '移除选中字段 (Ctrl+Del)',
+	    removeField: '移除该字段 (Ctrl+Del)',
+	    selectNode: '选择一个节点...',
+	    showAll: '展示全部',
+	    showMore: '展示更多',
+	    showMoreStatus: '显示${totalChilds}的${visibleChilds}项目.',
+	    sort: '排序',
+	    sortTitle: '排序${type}的子节点',
+	    sortTitleShort: '内容排序',
+	    sortFieldLabel: '字段：',
+	    sortDirectionLabel: '方向：',
+	    sortFieldTitle: '选择用于对数组或对象排序的嵌套字段',
+	    sortAscending: '升序排序',
+	    sortAscendingTitle: '按照该字段升序排序',
+	    sortDescending: '降序排序',
+	    sortDescendingTitle: '按照该字段降序排序',
+	    string: '字符串',
+	    transform: '变换',
+	    transformTitle: '筛选，排序，或者转换${type}的子节点',
+	    transformTitleShort: '筛选，排序，或者转换内容',
+	    transformQueryTitle: '输入JMESPath查询',
+	    transformWizardLabel: '向导',
+	    transformWizardFilter: '筛选',
+	    transformWizardSortBy: '排序',
+	    transformWizardSelectFields: '选择字段',
+	    transformQueryLabel: '查询',
+	    transformPreviewLabel: '预览',
+	    type: '类型',
+	    typeTitle: '更改字段类型',
+	    openUrl: 'Ctrl+Click 或者 Ctrl+Enter 在新窗口打开链接',
+	    undo: '撤销上次动作 (Ctrl+Z)',
+	    validationCannotMove: '无法将字段移入其子节点',
+	    autoType: '字段类型 "auto". ' +
+	      '字段类型由值自动确定 ' +
+	      '可以为 string，number，boolean，或者 null.',
+	    objectType: '字段类型 "object". ' +
+	      '对象包含一组无序的键/值对.',
+	    arrayType: '字段类型 "array". ' +
+	      '数组包含值的有序集合.',
+	    stringType: '字段类型 "string". ' +
+	      '字段类型由值自动确定，' +
+	      '但始终作为字符串返回.',
+	    modeCodeText: '代码',
+	    modeCodeTitle: '切换至代码高亮',
+	    modeFormText: '表单',
+	    modeFormTitle: '切换至表单编辑',
+	    modeTextText: '文本',
+	    modeTextTitle: '切换至文本编辑',
+	    modeTreeText: '树',
+	    modeTreeTitle: '切换至树编辑',
+	    modeViewText: '视图',
+	    modeViewTitle: '切换至树视图',
 	  },
 	  'pt-BR': {
 	    array: 'Lista',
@@ -8677,6 +8759,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // create select box when this node has an enum object
 	    if (this.enum && this.editable.value) {
+	      // The default blank value in enum list can be changed with 'enumDefaultValue' option.
+	      var enumDefaultValue = 'enumDefaultValue' in this.editor.options ? this.editor.options.enumDefaultValue : '';
+
 	      if (!this.dom.select) {
 	        this.dom.select = document.createElement('select');
 	        this.id = this.field + "_" + new Date().getUTCMilliseconds();
@@ -8685,12 +8770,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        //Create the default empty option
 	        this.dom.select.option = document.createElement('option');
-	        this.dom.select.option.value = '';
+	        this.dom.select.option.value = enumDefaultValue;
 	        this.dom.select.option.innerHTML = '--';
 	        this.dom.select.appendChild(this.dom.select.option);
 
 	        //Iterate all enum values and add them as options
 	        for(var i = 0; i < this.enum.length; i++) {
+
+	          // If enum list in schema contains the default blank value as allowed return value,
+	          // it should not be rendered twice.
+	          if (this.enum[i] === enumDefaultValue) {
+	            continue;
+	          }
+
 	          this.dom.select.option = document.createElement('option');
 	          this.dom.select.option.value = this.enum[i];
 	          this.dom.select.option.innerHTML = this.enum[i];
